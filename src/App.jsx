@@ -41,74 +41,52 @@ const LoadingSpinner = () => (
 // --- File-based Component Loading ---
 const MANUAL_FILES = [
   "acode_interactive_manual.jsx",
-  "adb-control-gemini_Manual.md",
-  "code-researcher_Manual.md",
-  "company-research_Manual.md",
-  "ComputerUse_Manual.md",
-  "Conductor_Manual.md",
-  "critical-analysis_Manual.md",
-  "Dev_and_Systems_Knowledge_Engineer.md",
-  "Doc_Creation_workflow.md",
-  "Elitle_Onto;logical_Deep_Researcher.md",
+  "adb-control-gemini_Manual.jsx",
+  "Agents_Guide.jsx",
+  "cleanup_guide.jsx",
+  "code-researcher_Manual.jsx",
+  "company-research_Manual.jsx",
+  "ComputerUse_Manual.jsx",
+  "Conductor_Manual.jsx",
+  "critical-analysis_Manual.jsx",
+  "DECENTRALIZED_MESH_MANUAL.jsx",
+  "Dev_and_Systems_Knowledge_Engineer.jsx",
+  "Doc_Creation_workflow.jsx",
+  "Elitle_Onto;logical_Deep_Researcher.jsx",
   "emacs-handbook.jsx",
-  "Exa_MCP_Server_Manual.md",
-  "Gemini_Relay_Chains_Master_Manual.md",
-  "Git_Expert_Manual.md",
-  "Hyper-Interative_Ideation_Specialist_Engine.md",
-  "implementation-planner_Manual.md",
-  "lateral-thinking_Manual.md",
-  "literature-review_Manual.md",
-  "MCP_Toolbox_Manual.md",
-  "Omni_Epistemplogical_Knowledge_Elite_Architect.md",
-  "people-research_Manual.md",
-  "Persona_Manual.md",
-  "Pickle_Rick_Manual.md",
-  "prd-drafter_Manual.md",
-  "run-long-command_Manual.md",
-  "ruthless-refactorer_Manual.md",
+  "Exa_MCP_Server_Manual.jsx",
+  "Gemini_Relay_Chains_Master_Manual.jsx",
+  "Git_Expert_Manual.jsx",
+  "Hyper-Interative_Ideation_Specialist_Engine.jsx",
+  "implementation-planner_Manual.jsx",
+  "lateral-thinking_Manual.jsx",
+  "literature-review_Manual.jsx",
+  "MANUAL.jsx",
+  "MCP_Toolbox_Manual.jsx",
+  "Omni_Epistemplogical_Knowledge_Elite_Architect.jsx",
+  "OMNI_SCOUT_ENGINE_MANUAL.jsx",
+  "people-research_Manual.jsx",
+  "Persona_Manual.jsx",
+  "Pickle_Rick_Manual.jsx",
+  "prd-drafter_Manual.jsx",
+  "run-long-command_Manual.jsx",
+  "ruthless-refactorer_Manual.jsx",
   "scout_interactive_spec.jsx",
-  "Scribe_Manual.md",
-  "skill-creator_Manual.md",
+  "Scribe_Manual.jsx",
+  "skill-creator_Manual.jsx",
+  "Starship_Master_Manual.jsx",
   "termux-handbook.jsx",
-  "video-downloader_Manual.md",
-  "video-editing_Manual.md"
+  "USER_MANUAL.jsx",
+  "video-downloader_Manual.jsx",
+  "video-editing_Manual.jsx",
+  "Xbox_RetroArch_Master_Manual.jsx"
 ];
 
 const dynamicImports = Object.fromEntries(
   MANUAL_FILES.filter(file => file.endsWith('.jsx')).map(file => {
-    // Vite requires a static path string for dynamic imports.
-    // We can't use a variable like `file` directly in the import path.
-    // This is a common pattern to work around it for known file sets.
     return [file, lazy(() => import(`../${file}`))];
   })
 );
-
-// --- Markdown Renderer ---
-const MarkdownViewer = ({ file }) => {
-  const [content, setContent] = useState('');
-
-  useEffect(() => {
-    fetch(`/${file}`)
-      .then(res => res.text())
-      .then(text => setContent(text));
-  }, [file]);
-
-  const renderMd = () => {
-    // A simple, non-comprehensive markdown to JSX converter
-    return content.split('\n').map((line, i) => {
-      if (line.startsWith('# ')) return <h1 key={i}>{line.substring(2)}</h1>;
-      if (line.startsWith('## ')) return <h2 key={i}>{line.substring(3)}</h2>;
-      if (line.startsWith('### ')) return <h3 key={i}>{line.substring(4)}</h3>;
-      if (line.startsWith('* ') || line.startsWith('- ')) {
-        return <li key={i} style={{ marginLeft: '2rem' }}>{line.substring(2)}</li>;
-      }
-      if (line.trim() === '') return <br key={i} />;
-      return <p key={i}>{line}</p>;
-    });
-  };
-
-  return <div style={{ padding: '1rem 2rem', background: 'var(--card-bg)', borderRadius: '8px' }}>{renderMd()}</div>;
-};
 
 // --- Main App Component ---
 function App() {
@@ -118,9 +96,6 @@ function App() {
     if (selectedFile.endsWith('.jsx')) {
       const ManualComponent = dynamicImports[selectedFile];
       return ManualComponent ? <ManualComponent /> : <p>Error loading component.</p>;
-    }
-    if (selectedFile.endsWith('.md')) {
-      return <MarkdownViewer file={selectedFile} />;
     }
     return <p>Select a file to view.</p>;
   };
@@ -147,7 +122,7 @@ function App() {
             textOverflow: 'ellipsis',
           }}
         >
-          {file.replace(/_Manual.md|.jsx|.md/g, '').replace(/_/g, ' ')}
+          {file.replace(/_Manual.jsx|.jsx|.md/g, '').replace(/_/g, ' ')}
         </button>
       ))}
     </nav>
